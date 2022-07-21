@@ -22,7 +22,7 @@ mongoose.connect(dbConfig.db, {
 );
 
 
-const io = require('socket.io')(server);
+const io = require('socket.io')(server, {cors: {origins: "*:*"}});
         
         const connectedUser = new Set();
         io.on('connection', (socket)=>{
