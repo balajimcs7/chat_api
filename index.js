@@ -8,9 +8,9 @@ const server = app.listen(PORT, ()=>{
     console.log('server is started', PORT);
 
     
-const io = require('socket.io')(server, {cors: {origins: "*:*"}});
 
 });
+const io = require('socket.io')(server, {cors: {origins: "*:*"}});
 
 mongoose.Promise = global.Promise;
 mongoose.connect(dbConfig.db, {
