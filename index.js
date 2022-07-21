@@ -6,6 +6,10 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 const server = app.listen(PORT, ()=>{
     console.log('server is started', PORT);
+
+    
+const io = require('socket.io')(server, {cors: {origins: "*:*"}});
+
 });
 
 mongoose.Promise = global.Promise;
@@ -21,8 +25,6 @@ mongoose.connect(dbConfig.db, {
     }
 );
 
-
-const io = require('socket.io')(server, {cors: {origins: "*:*"}});
         
         const connectedUser = new Set();
         io.on('connection', (socket)=>{
