@@ -12,19 +12,6 @@ const server = app.listen(PORT, ()=>{
 });
 const io = require('socket.io')(server, {cors: {origins: "*:*"}});
 
-mongoose.Promise = global.Promise;
-mongoose.connect(dbConfig.db, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}).then(
-    () => {
-        console.log('Database Connected');
-    },
-    (error) => {
-        console.log('Database can`t be connected' + error);
-    }
-);
-
         
         const connectedUser = new Set();
         io.on('connection', (socket)=>{
@@ -64,3 +51,18 @@ mongoose.connect(dbConfig.db, {
                 socket.broadcast.emit('message-receive', data);
           });
         });
+
+
+        
+mongoose.Promise = global.Promise;
+mongoose.connect(dbConfig.db, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}).then(
+    () => {
+        console.log('Database Connected');
+    },
+    (error) => {
+        console.log('Database can`t be connected' + error);
+    }
+);
