@@ -6,16 +6,18 @@ const chatSchema = new Schema({
         type: String,
         required: true,
     },
+    
 
     socket_id: {
         type: String,
         required: true,
-        unique: true,
+        
     },
     user_id: {
         type: String,
         required: true,
-        unique: true,
+        
+        
     },
     
     date: {
