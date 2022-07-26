@@ -29,6 +29,7 @@ const io = require('socket.io')(server, {cors: {origins: "*:*"}});
               });
             }
             else {
+                console.log("Authentication error");
               next(new Error('Authentication error'));
             }    
           }).
@@ -47,7 +48,7 @@ const io = require('socket.io')(server, {cors: {origins: "*:*"}});
             });
         
             socket.on('message', async (data)=>{
-                
+                console.log(data);
                 if(data == undefined){
                     return callback({message});
                 }
