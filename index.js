@@ -9,6 +9,57 @@ const auth = require('./auth');
 const {unless} = require('express-unless');
 const errors = require('./error');
 const { query } = require('express');
+const multer=require('multer');
+const path= require('path');
+// const file=require("fs")
+const model = require('./model')
+
+app.get('/',(req, res) => {
+res.send('We are at home')
+});
+
+app.use('/uploads', express.static(__dirname +'/uploads/'));
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+      cb(null, 'uploads')
+      console.log(storage);
+},
+
+filename: function (req, file, cb) {
+cb(null, new Date().toISOString()+file.originalname)
+}
+})
+
+var upload = multer({ storage: storage })
+// console.log(upload);
+
+app.post('/upload', upload.single('myFile'), async(req, res, next) => {
+console.log("file")
+const file = req.file
+// console.log(file);
+if (!file) {
+  const error = new Error('Please upload a file')
+  error.httpStatusCode = 400
+
+  return next("hey error")
+}
+
+const imagepost= new model({
+image: file.path
+})
+
+const savedimage= await imagepost.save()
+res.json(savedimage)
+
+})
+
+app.get('/image',async(req, res)=>{
+ const image = await model.find()
+ res.json(image)
+
+});
+
 const PORT = process.env.PORT || 4000;
 const server = app.listen(PORT, ()=>{
     console.log('server is started', PORT);
@@ -85,8 +136,13 @@ const io = require('socket.io')(server, {cors: {origins: "*:*"}});
 app.use(
     auth.authenticateToken.unless({
         path: [
-            { url: "/users/login", methods: ["POST"] },
-            { url: "/users/register", methods: ["POST"] },
+            { url: "/users/userLogin", methods: ["POST"] },
+            { url: "/users/ownerLogin", methods: ["POST"] },
+            { url: "/users/shopAdminLogin", methods: ["POST"] },
+            { url: "/users/adminLogin", methods: ["POST"] },
+            { url: "/users/userRegister", methods: ["POST"] },
+            { url: "/users/ownerRegister", methods: ["POST"] },
+            { url: "/users/shopAdminRegister", methods: ["POST"] },
         ],
     })
 );

@@ -16,10 +16,39 @@ const userSchema = new Schema({
         type: String,
         required: true,
     },
+    phoneNumber: {
+        type: String,
+        required: true,
+    },
+    houseNo: {
+        type: String,
+        required: true,
+    },
+    streetName: {
+        type: String,
+        required: true,
+    },
+    city: {
+        type: String,
+        required: true,
+    },
+    landMark: {
+        type: String,
+        required: true,
+    },
+    pincode: {
+        type: String,
+        required: true,
+    },
     date: {
         type: Date,
         default: Date.now()
-    }
+    },
+    userType: {
+        type: String,
+        enum : ['user','admin','shopAdmin','owner'],
+        default: 'user'
+    },
 });
 
 userSchema.set("toJSON", {
