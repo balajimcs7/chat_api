@@ -1,4 +1,5 @@
 const User = require('./user.model');
+const Product = require('./product_model');
 const bcrypt = require('bcryptjs');
 const auth = require('./auth');
 
@@ -146,7 +147,97 @@ async function userLogin({email, password}, callback){
         });
     }
 
-   
+    async function vegtableList(params, callback){
+        // console.log("ee");
+        // if(params.category_id === undefined){
+
+        //     return callback({message: "Required"});
+        // }
+        
+        params["product_userType"]  =  'vegtables';
+        const product = new Product(params);
+        product.save()
+        
+        .then((response) => {
+            return callback(null, response);
+
+        }).catch((error) => {
+            return callback(error);
+        });
+    }
+
+    async function fruitsList(params, callback){
+        // console.log("ee");
+        // if(params.category_id === undefined){
+
+        //     return callback({message: "Required"});
+        // }
+        params["product_userType"]  =  'Fruits';
+       
+        const product = new Product(params);
+        product.save()
+        
+        .then((response) => {
+            return callback(null, response);
+
+        }).catch((error) => {
+            return callback(error);
+        });
+    }
+
+    async function houseHoldList(params, callback){
+        // console.log("ee");
+        // if(params.category_id === undefined){
+
+        //     return callback({message: "Required"});
+        // }
+        
+        params["product_userType"]  =  'household';
+        const product = new Product(params);
+        product.save()
+        
+        .then((response) => {
+            return callback(null, response);
+
+        }).catch((error) => {
+            return callback(error);
+        });
+    }
+
+    async function snaksList(params, callback){
+        // console.log("ee");
+        // if(params.category_id === undefined){
+
+        //     return callback({message: "Required"});
+        // }
+        params["product_userType"]  =  'snaks';
+       
+        const product = new Product(params);
+        product.save()
+        
+        .then((response) => {
+            return callback(null, response);
+
+        }).catch((error) => {
+            return callback(error);
+        });
+    }
+
+    // async function vegtableGet(params, callback){
+    //     // console.log("ee");
+        
+        
+    //     const product = Product(params);
+    //     product.find()
+        
+    //     .then((response) => {
+    //         return callback(null, response);
+
+    //     }).catch((error) => {
+    //         return callback(error);
+    //     });
+    // }
+
 
     module.exports = {
         userLogin,
@@ -156,4 +247,9 @@ async function userLogin({email, password}, callback){
         userRegister,
         ownerRegister,
         shopAdminRegister,
+        vegtableList,
+        fruitsList,
+        houseHoldList,
+        snaksList,
+        
     };

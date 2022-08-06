@@ -1,5 +1,8 @@
 const bcryptjs = require('bcryptjs');
 const userService = require('./users.services');
+const User = require('./user.model');
+const Product = require('./product_model');
+const Category =require('./categories_model')
 
 exports.userRegister = (req, res, next) => {
     const {password} = req.body;
@@ -104,6 +107,103 @@ exports.adminLogin = (req, res, next) => {
      });
     });
  };
+
+ exports.vegtableList = (req, res, next) => {
+    // console.log("ee");
+    const{ Category, product_name, product_price, product_description, product_isLikeMe, product_image, secondary_image} = req.body;
+    userService.vegtableList({Category, product_name, product_price, product_description, product_isLikeMe,  secondary_image, product_image}, (error, result) => {
+     if(error){
+         return next(error);
+         
+     }
+     return res.status(200).send({
+         message: "Success",
+         data: result,
+     });
+    });
+ };
+ 
+ exports.fruitsList = (req, res, next) => {
+    // console.log("ee");
+    const{ Category, product_name, product_price, product_description, product_isLikeMe,  product_image, secondary_image} = req.body;
+    userService.fruitsList({Category, product_name, product_price, product_description, product_isLikeMe,  secondary_image, product_image}, (error, result) => {
+     if(error){
+         return next(error);
+         
+     }
+     return res.status(200).send({
+         message: "Success",
+         data: result,
+     });
+    });
+ };
+
+ exports.houseHoldList = (req, res, next) => {
+    // console.log("ee");
+    const{ Category, product_name, product_price, product_description, product_isLikeMe,  product_image, secondary_image} = req.body;
+    userService.houseHoldList({Category, product_name, product_price, product_description, secondary_image, product_isLikeMe,  product_image}, (error, result) => {
+     if(error){
+         return next(error);
+         
+     }
+     return res.status(200).send({
+         message: "Success",
+         data: result,
+     });
+    });
+ };
+
+ exports.snaksList = (req, res, next) => {
+    // console.log("ee");
+    const{ Category, product_name, product_price, product_description, product_isLikeMe,  product_image,secondary_image} = req.body;
+    userService.snaksList({Category, product_name, product_price, product_description, secondary_image, product_isLikeMe,  product_image}, (error, result) => {
+     if(error){
+         return next(error);
+         
+     }
+     return res.status(200).send({
+         message: "Success",
+         data: result,
+     });
+    });
+ };
+
+
+ exports.vegetableGet = async (req, res, next) => {
+    console.log("all");
+   try{
+    const product = await Product.find()
+    console.log(product)
+    res.json(product)
+   }catch(error){
+console.log("error")
+res.json(error)
+   }
+ };
+
+ exports.getone = async (req, res, next) => {
+    console.log(req.query.Category);
+   try{
+    let category = req.query.Category
+    const product = await Category.findOne({name : {$eq:category}});
+    const productid=product.id
+    const product1 = await Product.find({Category : {$eq:productid}});
+    
+    console.log(product1)
+    // res.json(product)
+    return res.status(200).send({
+        message: "Success",
+        data: product1,
+    });
+   }catch(error){
+console.log("error")
+res.json(error)
+   }
+ };
+
+ 
+ 
+ 
 
 exports.userProfile = (req, res, next) =>{
   return res.status(200).json({message: "Authorized User"});

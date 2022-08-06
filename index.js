@@ -11,54 +11,57 @@ const errors = require('./error');
 const { query } = require('express');
 const multer=require('multer');
 const path= require('path');
+const routes = express.Router();
+// const router =require('./router')
+// app.use("/users",router)
 // const file=require("fs")
 const model = require('./model')
 
-app.get('/',(req, res) => {
+app.get('/users',(req, res) => {
 res.send('We are at home')
 });
 
-app.use('/uploads', express.static(__dirname +'/uploads/'));
+// app.use('/uploads', express.static(__dirname +'/uploads/'));
 
-var storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-      cb(null, 'uploads')
-      console.log(storage);
-},
+// var storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//       cb(null, 'uploads')
+//       console.log(storage);
+// },
 
-filename: function (req, file, cb) {
-cb(null, new Date().toISOString()+file.originalname)
-}
-})
+// filename: function (req, file, cb) {
+// cb(null, new Date().toISOString()+file.originalname)
+// }
+// })
 
-var upload = multer({ storage: storage })
-// console.log(upload);
+// var upload = multer({ storage: storage })
+// // console.log(upload);
 
-app.post('/upload', upload.single('myFile'), async(req, res, next) => {
-console.log("file")
-const file = req.file
-// console.log(file);
-if (!file) {
-  const error = new Error('Please upload a file')
-  error.httpStatusCode = 400
+// app.post('/upload', upload.single('myFile'), async(req, res, next) => {
+// console.log("file")
+// const file = req.file
+// // console.log(file);
+// if (!file) {
+//   const error = new Error('Please upload a file')
+//   error.httpStatusCode = 400
 
-  return next("hey error")
-}
+//   return next("hey error")
+// }
 
-const imagepost= new model({
-image: file.path
-})
+// const imagepost= new model({
+// image: file.path
+// })
 
-const savedimage= await imagepost.save()
-res.json(savedimage)
+// const savedimage= await imagepost.save()
+// res.json(savedimage)
 
-})
+// })
 
-app.get('/image',async(req, res)=>{
- const image = await model.find()
- res.json(image)
+// app.get('/image',async(req, res)=>{
+//  const image = await model.find()
+//  res.json(image)
 
-});
+// });
 
 const PORT = process.env.PORT || 4000;
 const server = app.listen(PORT, ()=>{
@@ -143,6 +146,13 @@ app.use(
             { url: "/users/userRegister", methods: ["POST"] },
             { url: "/users/ownerRegister", methods: ["POST"] },
             { url: "/users/shopAdminRegister", methods: ["POST"] },
+            { url: "/product/vegtables", methods: ["POST"] },
+            { url: "/product/Fruits", methods: ["POST"] },
+            { url: "/product/household", methods: ["POST"] },
+            { url: "/product/snaks", methods: ["POST"] },
+            { url: "/product/vegetableGet", methods: ["GET"] },
+            { url: "/product/fruitklsGet", methods: ["GET"] },
+            { url: "/product/getone", methods: ["GET"] },
         ],
     })
 );
@@ -150,7 +160,10 @@ app.use(
 app.use(express.json());
 
 app.use("/users", require('./users.routes'));
-
+app.use("/product", require('./users.routes'));
+// app.use("/product",async function (req,res ){
+//     console.log(req);
+// });
 app.use(errors.errorHandler);
 
 mongoose.Promise = global.Promise;
